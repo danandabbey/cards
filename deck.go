@@ -3,21 +3,24 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
-	"strings"
 	"time"
 )
 
-type deck []string
+type deck []card
+
+type card struct {
+	suit  string
+	value string
+}
 
 func newDeck() deck {
 	cards := deck{}
-	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
-	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"}
+	s := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
+	v := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"}
 
-	for _, suit := range cardSuits {
-		for _, value := range cardValues {
-			cards = append(cards, value+" of "+suit)
+	for _, suit := range s {
+		for _, value := range v {
+			cards = append(cards, card{suit, value})
 		}
 	}
 	return cards
@@ -25,7 +28,7 @@ func newDeck() deck {
 
 func (d deck) print() {
 	for i, card := range d {
-		fmt.Println(i, card)
+		fmt.Println(i, card.value+" of "+card.suit)
 	}
 }
 
@@ -33,6 +36,7 @@ func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
 
+/*
 func (d deck) toString() string {
 	return strings.Join([]string(d), ",")
 }
@@ -50,6 +54,7 @@ func newDeckFromFile(fileName string) deck {
 	s := strings.Split(string(bs), ",")
 	return deck(s)
 }
+*/
 
 func (d deck) shuffle() {
 	source := rand.NewSource(time.Now().UTC().UnixNano())
